@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Devis de Location Flotte A4 Portrait - Terratransport x IVECO</title>
+    <title>Devis de Location Flotte A4 Portrait avec TVA - Terratransport x IVECO</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome icons -->
@@ -57,7 +57,7 @@
                 background-color: #ffffff !important;
                 padding: 0 !important;
                 margin: 0 !important;
-                font-size: 10pt;
+                font-size: 9.5pt;
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
             }
@@ -72,9 +72,13 @@
             .page-break-inside-avoid {
                 page-break-inside: avoid;
             }
-            /* Garantir un espacement aéré des cellules à l'impression */
+            /* Garantir un espacement aéré et centré des cellules à l'impression */
             th, td {
-                padding: 8px 12px !important;
+                padding: 8px 10px !important;
+                text-align: center !important;
+            }
+            .text-left-print {
+                text-align: left !important;
             }
         }
 
@@ -87,6 +91,7 @@
         }
         .excel-table td, .excel-table th {
             border: 1px solid #cbd5e1;
+            padding: 10px 12px;
         }
     </style>
 </head>
@@ -100,7 +105,7 @@
                 </div>
                 <div>
                     <h1 class="text-base font-bold leading-tight" contenteditable="true">Terratransport × IVECO</h1>
-                    <p class="text-xs text-slate-400">Générateur de Devis Officiel (Format A4 Portrait)</p>
+                    <p class="text-xs text-slate-400">Générateur de Devis Officiel avec TVA (A4 Portrait)</p>
                 </div>
             </div>
 
@@ -110,7 +115,7 @@
                     <i class="fa-solid fa-file-pdf mr-1.5"></i>Vue Devis Portrait
                 </button>
                 <button id="btn-tab-excel" onclick="switchTab('excel')" class="px-3 py-1.5 rounded-md font-medium text-slate-300 hover:text-white transition-all">
-                    <i class="fa-solid fa-table mr-1.5"></i>Feuille Imprimée
+                    <i class="fa-solid fa-table mr-1.5"></i>Tableau Synthétique
                 </button>
                 <button id="btn-tab-guide" onclick="switchTab('guide')" class="px-3 py-1.5 rounded-md font-medium text-slate-300 hover:text-white transition-all">
                     <i class="fa-solid fa-clipboard-check mr-1.5"></i>Modalités
@@ -138,21 +143,21 @@
                 </div>
                 <div class="flex items-center space-x-2 text-[11px] text-amber-300 bg-amber-950/60 px-3 py-0.5 rounded-full border border-amber-700/50">
                     <i class="fa-solid fa-pen-to-square text-amber-400"></i>
-                    <span><strong>Édition libre :</strong> Vous pouvez modifier N'IMPORTE QUEL texte ou chiffre directement sur la page !</span>
+                    <span><strong>Édition directe :</strong> Vous pouvez modifier n'importe quel texte ou titre à l'écran !</span>
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
                 <!-- Nombre de camions -->
                 <div class="bg-slate-900/80 p-2 rounded-lg border border-slate-700">
                     <label class="block text-[10px] font-medium text-slate-400 mb-1" contenteditable="true">Nombre de Camions</label>
                     <input type="number" id="param-nb-camions" value="100" min="1" oninput="recalculate()" class="w-full bg-slate-800 text-white font-bold text-sm px-2 py-1 rounded border border-slate-600 focus:border-blue-500 focus:outline-none text-center">
                 </div>
 
-                <!-- Tarif Jour (350.000 FCFA) -->
+                <!-- Tarif Jour (150.000 FCFA) -->
                 <div class="bg-slate-900/80 p-2 rounded-lg border border-slate-700">
                     <label class="block text-[10px] font-medium text-slate-400 mb-1" contenteditable="true">Tarif Jour / Camion (FCFA)</label>
-                    <input type="number" id="param-prix-jour" value="350000" step="5000" oninput="recalculate()" class="w-full bg-slate-800 text-emerald-400 font-extrabold text-sm px-2 py-1 rounded border border-slate-600 focus:border-emerald-500 focus:outline-none text-center">
+                    <input type="number" id="param-prix-jour" value="150000" step="5000" oninput="recalculate()" class="w-full bg-slate-800 text-emerald-400 font-extrabold text-sm px-2 py-1 rounded border border-slate-600 focus:border-emerald-500 focus:outline-none text-center">
                 </div>
 
                 <!-- Jours / Semaine (6 max) -->
@@ -165,6 +170,12 @@
                 <div class="bg-slate-900/80 p-2 rounded-lg border border-slate-700">
                     <label class="block text-[10px] font-medium text-slate-400 mb-1" contenteditable="true">Jours / Mois (max)</label>
                     <input type="number" id="param-jours-mois" value="25" min="1" max="31" oninput="recalculate()" class="w-full bg-slate-800 text-white font-bold text-sm px-2 py-1 rounded border border-slate-600 focus:border-blue-500 focus:outline-none text-center">
+                </div>
+
+                <!-- Taux TVA (%) -->
+                <div class="bg-slate-900/80 p-2 rounded-lg border border-slate-700">
+                    <label class="block text-[10px] font-medium text-slate-400 mb-1" contenteditable="true">Taux TVA (%)</label>
+                    <input type="number" id="param-tva" value="18" min="0" max="30" oninput="recalculate()" class="w-full bg-slate-800 text-amber-400 font-bold text-sm px-2 py-1 rounded border border-slate-600 focus:border-amber-500 focus:outline-none text-center">
                 </div>
 
                 <!-- Remise % -->
@@ -205,7 +216,7 @@
                     <h1 contenteditable="true" class="text-xl font-black text-slate-900">
                         DEVIS N° DEV-2026-IVECO-100
                     </h1>
-                    <p class="text-xs text-slate-500 mt-1"><span contenteditable="true">Date : </span><span id="devis-date" contenteditable="true">22 Juillet 2026</span></p>
+                    <p class="text-xs text-slate-500 mt-1"><span contenteditable="true">Date : </span><span id="devis-date" contenteditable="true">23 Juillet 2026</span></p>
                     <p class="text-xs text-slate-500"><span contenteditable="true">Validité de l'offre : </span><span contenteditable="true">90 Jours</span></p>
                 </div>
             </div>
@@ -239,15 +250,15 @@
                         <p class="text-base font-black text-blue-900 mt-0.5" id="card-truck-count" contenteditable="true">100 Camions</p>
                     </div>
                     <div class="bg-emerald-50/80 border border-emerald-200 p-2.5 rounded-xl">
-                        <p contenteditable="true" class="text-[10px] text-emerald-800 font-bold uppercase">Tarif Jour / Camion</p>
-                        <p class="text-base font-black text-emerald-900 mt-0.5" id="card-rate-day" contenteditable="true">350.000 FCFA</p>
+                        <p contenteditable="true" class="text-[10px] text-emerald-800 font-bold uppercase">Tarif Jour HT / Camion</p>
+                        <p class="text-base font-black text-emerald-900 mt-0.5" id="card-rate-day" contenteditable="true">150.000 FCFA</p>
+                    </div>
+                    <div class="bg-amber-50/80 border border-amber-200 p-2.5 rounded-xl">
+                        <p contenteditable="true" class="text-[10px] text-amber-800 font-bold uppercase">Taux TVA Réglementaire</p>
+                        <p class="text-base font-black text-amber-900 mt-0.5" id="card-tva-rate" contenteditable="true">18 %</p>
                     </div>
                     <div class="bg-slate-100/90 border border-slate-200 p-2.5 rounded-xl">
-                        <p contenteditable="true" class="text-[10px] text-slate-600 font-bold uppercase">Max / Semaine</p>
-                        <p class="text-base font-black text-slate-900 mt-0.5" id="card-days-week" contenteditable="true">6 Jours</p>
-                    </div>
-                    <div class="bg-slate-100/90 border border-slate-200 p-2.5 rounded-xl">
-                        <p contenteditable="true" class="text-[10px] text-slate-600 font-bold uppercase">Max / Mois</p>
+                        <p contenteditable="true" class="text-[10px] text-slate-600 font-bold uppercase">Plafond Mois</p>
                         <p class="text-base font-black text-slate-900 mt-0.5" id="card-days-month" contenteditable="true">25 Jours</p>
                     </div>
                 </div>
@@ -256,37 +267,42 @@
             <div class="mb-6">
                 <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-2.5 flex items-center">
                     <i class="fa-solid fa-truck text-blue-600 mr-2"></i> 
-                    <span contenteditable="true">1. Coût de Location pour UN (1) Camion IVECO</span>
+                    <span contenteditable="true">1. Coût de Location Unitaire pour UN (1) Camion IVECO</span>
                 </h3>
                 <div class="overflow-x-auto border border-slate-300 rounded-xl shadow-sm">
-                    <table class="w-full text-left text-xs border-collapse">
+                    <table class="w-full text-center text-xs border-collapse">
                         <thead>
                             <tr class="bg-slate-900 text-white text-[11px] uppercase tracking-wider">
-                                <th contenteditable="true" class="py-3 px-4 text-left border-r border-slate-700 w-1/4">Période</th>
-                                <th contenteditable="true" class="py-3 px-4 text-center border-r border-slate-700 w-2/5">Base d'Exploitation</th>
-                                <th contenteditable="true" class="py-3 px-4 text-center w-1/3">Montant Unitaire (FCFA)</th>
+                                <th contenteditable="true" class="py-3 px-3 text-left-print text-left border-r border-slate-700 w-1/4">Période</th>
+                                <th contenteditable="true" class="py-3 px-3 text-center border-r border-slate-700">Montant HT</th>
+                                <th contenteditable="true" class="py-3 px-3 text-center border-r border-slate-700 text-amber-300">TVA (<span class="lbl-tva-pct">18</span>%)</th>
+                                <th contenteditable="true" class="py-3 px-3 text-center font-bold text-emerald-300">Total TTC</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-200 bg-white">
                             <tr class="hover:bg-slate-50">
-                                <td class="py-3 px-4 font-semibold text-slate-800 border-r border-slate-200" contenteditable="true">Par Jour</td>
-                                <td class="py-3 px-4 text-center text-slate-600 border-r border-slate-200" contenteditable="true">1 jour de service effectif</td>
-                                <td class="py-3 px-4 text-center font-bold text-slate-900 text-sm" id="row-1truck-day" contenteditable="true">350.000 FCFA</td>
+                                <td class="py-3 px-3 font-semibold text-slate-800 text-left-print border-r border-slate-200" contenteditable="true">Par Jour (1j)</td>
+                                <td class="py-3 px-3 text-center font-bold text-slate-800 border-r border-slate-200" id="row-1t-day-ht" contenteditable="true">150.000 FCFA</td>
+                                <td class="py-3 px-3 text-center font-medium text-amber-700 border-r border-slate-200" id="row-1t-day-tva" contenteditable="true">27.000 FCFA</td>
+                                <td class="py-3 px-3 text-center font-extrabold text-emerald-700 text-sm" id="row-1t-day-ttc" contenteditable="true">177.000 FCFA</td>
                             </tr>
                             <tr class="hover:bg-slate-50">
-                                <td class="py-3 px-4 font-semibold text-slate-800 border-r border-slate-200" contenteditable="true">Par Semaine</td>
-                                <td class="py-3 px-4 text-center text-slate-600 border-r border-slate-200" id="desc-1truck-week" contenteditable="true">6 jours max / semaine</td>
-                                <td class="py-3 px-4 text-center font-bold text-slate-900 text-sm" id="row-1truck-week" contenteditable="true">2.100.000 FCFA</td>
+                                <td class="py-3 px-3 font-semibold text-slate-800 text-left-print border-r border-slate-200" contenteditable="true">Par Semaine (6j max)</td>
+                                <td class="py-3 px-3 text-center font-bold text-slate-800 border-r border-slate-200" id="row-1t-week-ht" contenteditable="true">900.000 FCFA</td>
+                                <td class="py-3 px-3 text-center font-medium text-amber-700 border-r border-slate-200" id="row-1t-week-tva" contenteditable="true">162.000 FCFA</td>
+                                <td class="py-3 px-3 text-center font-extrabold text-emerald-700 text-sm" id="row-1t-week-ttc" contenteditable="true">1.062.000 FCFA</td>
                             </tr>
                             <tr class="hover:bg-slate-50 bg-blue-50/40">
-                                <td class="py-3 px-4 font-bold text-blue-950 border-r border-slate-200" contenteditable="true">Par Mois</td>
-                                <td class="py-3 px-4 text-center text-slate-700 font-medium border-r border-slate-200" id="desc-1truck-month" contenteditable="true">25 jours max / mois</td>
-                                <td class="py-3 px-4 text-center font-extrabold text-blue-900 text-sm" id="row-1truck-month" contenteditable="true">8.750.000 FCFA</td>
+                                <td class="py-3 px-3 font-bold text-blue-950 text-left-print border-r border-slate-200" contenteditable="true">Par Mois (25j max)</td>
+                                <td class="py-3 px-3 text-center font-bold text-blue-900 border-r border-slate-200" id="row-1t-month-ht" contenteditable="true">3.750.000 FCFA</td>
+                                <td class="py-3 px-3 text-center font-medium text-amber-800 border-r border-slate-200" id="row-1t-month-tva" contenteditable="true">675.000 FCFA</td>
+                                <td class="py-3 px-3 text-center font-extrabold text-emerald-800 text-sm" id="row-1t-month-ttc" contenteditable="true">4.425.000 FCFA</td>
                             </tr>
                             <tr class="hover:bg-slate-50">
-                                <td class="py-3 px-4 font-semibold text-slate-800 border-r border-slate-200" contenteditable="true">Par An</td>
-                                <td class="py-3 px-4 text-center text-slate-600 border-r border-slate-200" contenteditable="true">12 mois de location</td>
-                                <td class="py-3 px-4 text-center font-bold text-slate-900 text-sm" id="row-1truck-year" contenteditable="true">105.000.000 FCFA</td>
+                                <td class="py-3 px-3 font-semibold text-slate-800 text-left-print border-r border-slate-200" contenteditable="true">Par An (12 mois)</td>
+                                <td class="py-3 px-3 text-center font-bold text-slate-800 border-r border-slate-200" id="row-1t-year-ht" contenteditable="true">45.000.000 FCFA</td>
+                                <td class="py-3 px-3 text-center font-medium text-amber-700 border-r border-slate-200" id="row-1t-year-tva" contenteditable="true">8.100.000 FCFA</td>
+                                <td class="py-3 px-3 text-center font-extrabold text-emerald-700 text-sm" id="row-1t-year-ttc" contenteditable="true">53.100.000 FCFA</td>
                             </tr>
                         </tbody>
                     </table>
@@ -297,39 +313,44 @@
                 <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-2.5 flex items-center justify-between">
                     <span class="flex items-center">
                         <i class="fa-solid fa-truck-fleet text-emerald-600 mr-2"></i> 
-                        <span contenteditable="true">2. Coût Total pour la Flotte Complète (</span><span id="title-fleet-count" contenteditable="true">100</span> <span contenteditable="true">Camions)</span>
+                        <span contenteditable="true">2. Coût Total Consolidé pour la Flotte (</span><span id="title-fleet-count" contenteditable="true">100</span> <span contenteditable="true">Camions)</span>
                     </span>
-                    <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full font-bold" contenteditable="true">Consolidé</span>
+                    <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full font-bold" contenteditable="true">Consolidé avec TVA</span>
                 </h3>
                 <div class="overflow-x-auto border border-slate-300 rounded-xl shadow-sm">
-                    <table class="w-full text-left text-xs border-collapse">
+                    <table class="w-full text-center text-xs border-collapse">
                         <thead>
                             <tr class="bg-blue-950 text-white text-[11px] uppercase tracking-wider">
-                                <th contenteditable="true" class="py-3 px-4 text-left border-r border-slate-800 w-1/4">Période Flotte</th>
-                                <th contenteditable="true" class="py-3 px-4 text-center border-r border-slate-800 w-2/5">Formule de Calcul</th>
-                                <th contenteditable="true" class="py-3 px-4 text-center w-1/3">Total Flotte HT (FCFA)</th>
+                                <th contenteditable="true" class="py-3 px-3 text-left-print text-left border-r border-slate-800 w-1/4">Période Flotte</th>
+                                <th contenteditable="true" class="py-3 px-3 text-center border-r border-slate-800">Total Flotte HT</th>
+                                <th contenteditable="true" class="py-3 px-3 text-center border-r border-slate-800 text-amber-300">TVA (<span class="lbl-tva-pct">18</span>%)</th>
+                                <th contenteditable="true" class="py-3 px-3 text-center font-bold text-emerald-300">Total Flotte TTC</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-200 bg-white">
                             <tr class="hover:bg-slate-50">
-                                <td class="py-3 px-4 font-semibold text-slate-800 border-r border-slate-200" contenteditable="true">Flotte / Jour</td>
-                                <td class="py-3 px-4 text-center text-slate-600 border-r border-slate-200" id="mult-fleet-day" contenteditable="true">100 × 350.000 FCFA</td>
-                                <td class="py-3 px-4 text-center font-extrabold text-slate-900 text-sm" id="row-100trucks-day" contenteditable="true">35.000.000 FCFA</td>
+                                <td class="py-3 px-3 font-semibold text-slate-800 text-left-print border-r border-slate-200" contenteditable="true">Flotte / Jour</td>
+                                <td class="py-3 px-3 text-center font-bold text-slate-900 border-r border-slate-200" id="row-fleet-day-ht" contenteditable="true">15.000.000 FCFA</td>
+                                <td class="py-3 px-3 text-center font-medium text-amber-700 border-r border-slate-200" id="row-fleet-day-tva" contenteditable="true">2.700.000 FCFA</td>
+                                <td class="py-3 px-3 text-center font-black text-emerald-700 text-sm" id="row-fleet-day-ttc" contenteditable="true">17.700.000 FCFA</td>
                             </tr>
                             <tr class="hover:bg-slate-50">
-                                <td class="py-3 px-4 font-semibold text-slate-800 border-r border-slate-200" contenteditable="true">Flotte / Semaine</td>
-                                <td class="py-3 px-4 text-center text-slate-600 border-r border-slate-200" id="mult-fleet-week" contenteditable="true">100 × 2.100.000 FCFA</td>
-                                <td class="py-3 px-4 text-center font-extrabold text-slate-900 text-sm" id="row-100trucks-week" contenteditable="true">210.000.000 FCFA</td>
+                                <td class="py-3 px-3 font-semibold text-slate-800 text-left-print border-r border-slate-200" contenteditable="true">Flotte / Semaine (6j)</td>
+                                <td class="py-3 px-3 text-center font-bold text-slate-900 border-r border-slate-200" id="row-fleet-week-ht" contenteditable="true">90.000.000 FCFA</td>
+                                <td class="py-3 px-3 text-center font-medium text-amber-700 border-r border-slate-200" id="row-fleet-week-tva" contenteditable="true">16.200.000 FCFA</td>
+                                <td class="py-3 px-3 text-center font-black text-emerald-700 text-sm" id="row-fleet-week-ttc" contenteditable="true">106.200.000 FCFA</td>
                             </tr>
                             <tr class="hover:bg-slate-50 bg-amber-50/50">
-                                <td class="py-3 px-4 font-bold text-amber-950 border-r border-slate-200" contenteditable="true">Flotte / Mois</td>
-                                <td class="py-3 px-4 text-center text-amber-900 font-medium border-r border-slate-200" id="mult-fleet-month" contenteditable="true">100 × 8.750.000 FCFA</td>
-                                <td class="py-3 px-4 text-center font-black text-amber-900 text-sm" id="row-100trucks-month" contenteditable="true">875.000.000 FCFA</td>
+                                <td class="py-3 px-3 font-bold text-amber-950 text-left-print border-r border-slate-200" contenteditable="true">Flotte / Mois (25j)</td>
+                                <td class="py-3 px-3 text-center font-bold text-amber-900 border-r border-slate-200" id="row-fleet-month-ht" contenteditable="true">375.000.000 FCFA</td>
+                                <td class="py-3 px-3 text-center font-medium text-amber-800 border-r border-slate-200" id="row-fleet-month-tva" contenteditable="true">67.500.000 FCFA</td>
+                                <td class="py-3 px-3 text-center font-black text-amber-900 text-sm" id="row-fleet-month-ttc" contenteditable="true">442.500.000 FCFA</td>
                             </tr>
                             <tr class="hover:bg-slate-50 bg-blue-50/60">
-                                <td class="py-3 px-4 font-bold text-blue-950 border-r border-slate-200" contenteditable="true">Flotte / An</td>
-                                <td class="py-3 px-4 text-center text-blue-900 font-medium border-r border-slate-200" id="mult-fleet-year" contenteditable="true">100 × 105.000.000 FCFA</td>
-                                <td class="py-3 px-4 text-center font-black text-blue-900 text-sm" id="row-100trucks-year" contenteditable="true">10.500.000.000 FCFA</td>
+                                <td class="py-3 px-3 font-bold text-blue-950 text-left-print border-r border-slate-200" contenteditable="true">Flotte / An (12 mois)</td>
+                                <td class="py-3 px-3 text-center font-bold text-blue-900 border-r border-slate-200" id="row-fleet-year-ht" contenteditable="true">4.500.000.000 FCFA</td>
+                                <td class="py-3 px-3 text-center font-medium text-amber-800 border-r border-slate-200" id="row-fleet-year-tva" contenteditable="true">810.000.000 FCFA</td>
+                                <td class="py-3 px-3 text-center font-black text-blue-900 text-sm" id="row-fleet-year-ttc" contenteditable="true">5.310.000.000 FCFA</td>
                             </tr>
                         </tbody>
                     </table>
@@ -338,36 +359,41 @@
 
             <div class="my-6 bg-slate-900 text-white rounded-xl p-5 shadow-md border border-slate-800">
                 <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 border-b border-slate-800 pb-2 mb-3 flex items-center justify-between">
-                    <span contenteditable="true">Récapitulatif Financier Annuel Global</span>
+                    <span contenteditable="true">Récapitulatif Financier Annuel Global (TVA Incluse)</span>
                     <i class="fa-solid fa-calculator text-emerald-400"></i>
                 </h4>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs mb-3">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs mb-3">
                     <div class="flex justify-between items-center text-slate-300 bg-slate-800/60 p-2.5 rounded-lg">
-                        <span contenteditable="true">Sous-Total Annuel HT :</span>
-                        <span class="font-bold text-white text-sm" id="recap-subtotal" contenteditable="true">10.500.000.000 FCFA</span>
+                        <span contenteditable="true">Total Annuel HT :</span>
+                        <span class="font-bold text-white text-xs sm:text-sm" id="recap-subtotal-ht" contenteditable="true">4.500.000.000 FCFA</span>
                     </div>
 
                     <div class="flex justify-between items-center text-slate-300 bg-slate-800/60 p-2.5 rounded-lg">
-                        <span><span contenteditable="true">Remise Globale (</span><span id="recap-remise-pct" contenteditable="true">0</span><span contenteditable="true">%) :</span></span>
-                        <span class="font-bold text-emerald-400 text-sm" id="recap-remise-val" contenteditable="true">- 0 FCFA</span>
+                        <span><span contenteditable="true">TVA Total (</span><span class="lbl-tva-pct">18</span><span contenteditable="true">%) :</span></span>
+                        <span class="font-bold text-amber-400 text-xs sm:text-sm" id="recap-total-tva" contenteditable="true">+ 810.000.000 FCFA</span>
+                    </div>
+
+                    <div class="flex justify-between items-center text-slate-300 bg-slate-800/60 p-2.5 rounded-lg">
+                        <span><span contenteditable="true">Remise (</span><span id="recap-remise-pct" contenteditable="true">0</span><span contenteditable="true">%) :</span></span>
+                        <span class="font-bold text-emerald-400 text-xs sm:text-sm" id="recap-remise-val" contenteditable="true">- 0 FCFA</span>
                     </div>
                 </div>
 
                 <div class="pt-3 border-t-2 border-slate-700 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                     <div>
-                        <span class="text-[10px] uppercase font-bold text-slate-400 block" contenteditable="true">TOTAL GÉNÉRAL ANNUEL</span>
-                        <span class="text-2xl font-black text-emerald-400" id="recap-ttc-total" contenteditable="true">10.500.000.000 FCFA</span>
+                        <span class="text-[10px] uppercase font-bold text-slate-400 block" contenteditable="true">TOTAL GÉNÉRAL ANNUEL TTC</span>
+                        <span class="text-2xl font-black text-emerald-400" id="recap-ttc-total" contenteditable="true">5.310.000.000 FCFA</span>
                     </div>
                     <div class="bg-slate-800 px-4 py-2 rounded-lg border border-slate-700 text-left sm:text-right">
-                        <span class="text-[10px] text-slate-400 block" contenteditable="true">Loyer Mensuel Flotte :</span>
-                        <span class="font-bold text-amber-400 text-sm" id="recap-ttc-monthly" contenteditable="true">875.000.000 FCFA / mois</span>
+                        <span class="text-[10px] text-slate-400 block" contenteditable="true">Loyer Mensuel Consolidé TTC :</span>
+                        <span class="font-bold text-amber-400 text-sm" id="recap-ttc-monthly" contenteditable="true">442.500.000 FCFA / mois</span>
                     </div>
                 </div>
             </div>
 
             <div class="mt-8 pt-4 border-t border-slate-200 grid grid-cols-2 gap-6 text-xs text-slate-600 page-break-inside-avoid">
-                <div class="border border-slate-200 rounded-xl p-4 bg-slate-50/50">
+                <div class="border border-slate-200 rounded-xl p-4 bg-slate-50/50 text-left">
                     <p class="font-bold text-slate-900 mb-0.5" contenteditable="true">POUR IVECO MOTORS S.A.</p>
                     <p class="text-[10px] text-slate-500 mb-10" contenteditable="true">Bon pour accord et confirmation tarifaire</p>
                     <div class="border-t border-dashed border-slate-300 pt-1.5 flex justify-between text-[10px] text-slate-400">
@@ -376,7 +402,7 @@
                     </div>
                 </div>
 
-                <div class="border border-slate-200 rounded-xl p-4 bg-slate-50/50">
+                <div class="border border-slate-200 rounded-xl p-4 bg-slate-50/50 text-left">
                     <p class="font-bold text-slate-900 mb-0.5" contenteditable="true">POUR TERRATRANSPORT S.A.</p>
                     <p class="text-[10px] text-slate-500 mb-10" contenteditable="true">Acceptation de l'offre de location</p>
                     <div class="border-t border-dashed border-slate-300 pt-1.5 flex justify-between text-[10px] text-slate-400">
@@ -388,11 +414,12 @@
 
         </div>
 
+        <!-- VUE 2 : TABLEAU SYNTHÉTIQUE COMPTABLE AVEC TVA -->
         <div id="tab-view-excel" class="hidden bg-white rounded-xl shadow-lg border border-slate-200 p-6 sm:p-8">
             <div class="mb-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-200 pb-3">
                 <div>
                     <h2 class="text-base font-bold text-slate-900 flex items-center" contenteditable="true">
-                        <i class="fa-solid fa-table text-emerald-600 mr-2"></i> Tableau Synthetique Imprimable (Format A4 Portrait)
+                        <i class="fa-solid fa-table text-emerald-600 mr-2"></i> Tableau Synthétique avec Ventilation HT / TVA / TTC
                     </h2>
                     <p class="text-xs text-slate-500" contenteditable="true">Rendu comptable clair avec colonnes aérées et centrées.</p>
                 </div>
@@ -402,101 +429,74 @@
             </div>
 
             <div class="overflow-x-auto border border-slate-300 rounded-xl shadow-sm">
-                <table class="w-full text-xs excel-table border-collapse bg-white font-sans">
+                <table class="w-full text-xs excel-table border-collapse bg-white font-sans text-center">
                     <thead>
                         <tr class="bg-slate-900 text-white font-bold text-[11px] uppercase tracking-wider">
                             <th class="p-3 w-16 text-center border-r border-slate-700" contenteditable="true">Ref</th>
-                            <th class="p-3 text-left border-r border-slate-700" contenteditable="true">Désignation / Période</th>
-                            <th class="p-3 text-center border-r border-slate-700 w-44" contenteditable="true">Tarif Unitaire (1 Camion)</th>
-                            <th class="p-3 text-center border-r border-slate-700 w-48" contenteditable="true">Total Flotte (100 Camions)</th>
-                            <th class="p-3 text-center" contenteditable="true">Conditions</th>
+                            <th class="p-3 text-left-print text-left border-r border-slate-700" contenteditable="true">Désignation / Période</th>
+                            <th class="p-3 text-center border-r border-slate-700" contenteditable="true">1 Camion (HT)</th>
+                            <th class="p-3 text-center border-r border-slate-700" contenteditable="true">100 Camions (HT)</th>
+                            <th class="p-3 text-center border-r border-slate-700 text-amber-300" contenteditable="true">TVA (<span class="lbl-tva-pct">18</span>%)</th>
+                            <th class="p-3 text-center font-bold text-emerald-300" contenteditable="true">Total Flotte TTC</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-200 text-xs">
                         <tr>
-                            <td colspan="5" class="p-2.5 font-bold bg-slate-900 text-white text-center uppercase tracking-wider text-[11px]" contenteditable="true">
-                                I. PARAMÈTRES D'EXPLOITATION DE LA FLOTTE
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="p-3 text-center font-mono-code font-bold text-slate-500 border-r border-slate-200" contenteditable="true">P-01</td>
-                            <td class="p-3 font-semibold text-slate-800 border-r border-slate-200" contenteditable="true">Nombre de Camions (Flotte)</td>
-                            <td class="p-3 text-center font-bold text-blue-700 border-r border-slate-200" id="cell-B4" contenteditable="true">100 Camions</td>
-                            <td class="p-3 text-center font-bold text-slate-400 border-r border-slate-200" contenteditable="true">-</td>
-                            <td class="p-3 text-center text-slate-500" contenteditable="true">Flotte IVECO mise à disposition</td>
-                        </tr>
-                        <tr>
-                            <td class="p-3 text-center font-mono-code font-bold text-slate-500 border-r border-slate-200" contenteditable="true">P-02</td>
-                            <td class="p-3 font-semibold text-slate-800 border-r border-slate-200" contenteditable="true">Tarif Journalier unitaire</td>
-                            <td class="p-3 text-center font-bold text-emerald-700 border-r border-slate-200" id="cell-B5" contenteditable="true">350 000 FCFA</td>
-                            <td class="p-3 text-center font-bold text-slate-400 border-r border-slate-200" contenteditable="true">-</td>
-                            <td class="p-3 text-center text-slate-500" contenteditable="true">Par jour d'exploitation effectif</td>
-                        </tr>
-                        <tr>
-                            <td class="p-3 text-center font-mono-code font-bold text-slate-500 border-r border-slate-200" contenteditable="true">P-03</td>
-                            <td class="p-3 font-semibold text-slate-800 border-r border-slate-200" contenteditable="true">Plafond Hebdomadaire</td>
-                            <td class="p-3 text-center font-bold text-slate-800 border-r border-slate-200" id="cell-B6" contenteditable="true">6 Jours</td>
-                            <td class="p-3 text-center font-bold text-slate-400 border-r border-slate-200" contenteditable="true">-</td>
-                            <td class="p-3 text-center text-slate-500" contenteditable="true">Maximum 6 jours / semaine</td>
-                        </tr>
-                        <tr>
-                            <td class="p-3 text-center font-mono-code font-bold text-slate-500 border-r border-slate-200" contenteditable="true">P-04</td>
-                            <td class="p-3 font-semibold text-slate-800 border-r border-slate-200" contenteditable="true">Plafond Mensuel</td>
-                            <td class="p-3 text-center font-bold text-slate-800 border-r border-slate-200" id="cell-B7" contenteditable="true">25 Jours</td>
-                            <td class="p-3 text-center font-bold text-slate-400 border-r border-slate-200" contenteditable="true">-</td>
-                            <td class="p-3 text-center text-slate-500" contenteditable="true">Maximum 25 jours / mois</td>
-                        </tr>
-
-                        <tr>
-                            <td colspan="5" class="p-2.5 font-bold bg-slate-100 text-slate-800 text-center uppercase tracking-wider border-t border-b border-slate-300 text-[11px]" contenteditable="true">
-                                II. DÉTAILLÉ FINANCIER DE LOCATION
+                            <td colspan="6" class="p-2.5 font-bold bg-slate-900 text-white text-center uppercase tracking-wider text-[11px]" contenteditable="true">
+                                I. SYNTHÈSE TARIFAIRE DE LA FLOTTE
                             </td>
                         </tr>
                         <tr class="hover:bg-slate-50">
                             <td class="p-3 text-center font-mono-code font-bold text-slate-500 border-r border-slate-200" contenteditable="true">L-01</td>
-                            <td class="p-3 font-medium text-slate-800 border-r border-slate-200" contenteditable="true">Location Journalière</td>
-                            <td class="p-3 text-center font-bold text-slate-800 border-r border-slate-200" id="cell-C10" contenteditable="true">350 000 FCFA</td>
-                            <td class="p-3 text-center font-extrabold text-slate-900 border-r border-slate-200" id="cell-D16" contenteditable="true">35 000 000 FCFA</td>
-                            <td class="p-3 text-center text-slate-500" contenteditable="true">Base 1 jour effectif</td>
+                            <td class="p-3 text-left-print font-semibold text-slate-800 border-r border-slate-200" contenteditable="true">Location Journalière (1j)</td>
+                            <td class="p-3 text-center font-bold text-slate-800 border-r border-slate-200" id="cell-1t-day-ht" contenteditable="true">150.000 FCFA</td>
+                            <td class="p-3 text-center font-bold text-slate-900 border-r border-slate-200" id="cell-fl-day-ht" contenteditable="true">15.000.000 FCFA</td>
+                            <td class="p-3 text-center font-medium text-amber-700 border-r border-slate-200" id="cell-fl-day-tva" contenteditable="true">2.700.000 FCFA</td>
+                            <td class="p-3 text-center font-extrabold text-emerald-700" id="cell-fl-day-ttc" contenteditable="true">17.700.000 FCFA</td>
                         </tr>
                         <tr class="hover:bg-slate-50">
                             <td class="p-3 text-center font-mono-code font-bold text-slate-500 border-r border-slate-200" contenteditable="true">L-02</td>
-                            <td class="p-3 font-medium text-slate-800 border-r border-slate-200" contenteditable="true">Location Hebdomadaire (6j max)</td>
-                            <td class="p-3 text-center font-bold text-slate-800 border-r border-slate-200" id="cell-C11" contenteditable="true">2 100 000 FCFA</td>
-                            <td class="p-3 text-center font-extrabold text-slate-900 border-r border-slate-200" id="cell-D17" contenteditable="true">210 000 000 FCFA</td>
-                            <td class="p-3 text-center text-slate-500" contenteditable="true">Calculé sur 6 jours de service</td>
+                            <td class="p-3 text-left-print font-semibold text-slate-800 border-r border-slate-200" contenteditable="true">Location Hebdomadaire (6j max)</td>
+                            <td class="p-3 text-center font-bold text-slate-800 border-r border-slate-200" id="cell-1t-week-ht" contenteditable="true">900.000 FCFA</td>
+                            <td class="p-3 text-center font-bold text-slate-900 border-r border-slate-200" id="cell-fl-week-ht" contenteditable="true">90.000.000 FCFA</td>
+                            <td class="p-3 text-center font-medium text-amber-700 border-r border-slate-200" id="cell-fl-week-tva" contenteditable="true">16.200.000 FCFA</td>
+                            <td class="p-3 text-center font-extrabold text-emerald-700" id="cell-fl-week-ttc" contenteditable="true">106.200.000 FCFA</td>
                         </tr>
                         <tr class="hover:bg-slate-50 bg-amber-50/40">
                             <td class="p-3 text-center font-mono-code font-bold text-amber-800 border-r border-slate-200" contenteditable="true">L-03</td>
-                            <td class="p-3 font-bold text-slate-900 border-r border-slate-200" contenteditable="true">Location Mensuelle (25j max)</td>
-                            <td class="p-3 text-center font-bold text-blue-900 border-r border-slate-200" id="cell-C12" contenteditable="true">8 750 000 FCFA</td>
-                            <td class="p-3 text-center font-black text-amber-900 border-r border-slate-200" id="cell-D18" contenteditable="true">875 000 000 FCFA</td>
-                            <td class="p-3 text-center text-amber-900 font-medium" contenteditable="true">Loyer mensuel consolidé</td>
+                            <td class="p-3 text-left-print font-bold text-slate-900 border-r border-slate-200" contenteditable="true">Location Mensuelle (25j max)</td>
+                            <td class="p-3 text-center font-bold text-blue-900 border-r border-slate-200" id="cell-1t-month-ht" contenteditable="true">3.750.000 FCFA</td>
+                            <td class="p-3 text-center font-extrabold text-amber-900 border-r border-slate-200" id="cell-fl-month-ht" contenteditable="true">375.000.000 FCFA</td>
+                            <td class="p-3 text-center font-medium text-amber-800 border-r border-slate-200" id="cell-fl-month-tva" contenteditable="true">67.500.000 FCFA</td>
+                            <td class="p-3 text-center font-black text-amber-900" id="cell-fl-month-ttc" contenteditable="true">442.500.000 FCFA</td>
                         </tr>
                         <tr class="hover:bg-slate-50 bg-blue-50/50">
                             <td class="p-3 text-center font-mono-code font-bold text-blue-800 border-r border-slate-200" contenteditable="true">L-04</td>
-                            <td class="p-3 font-bold text-blue-950 border-r border-slate-200" contenteditable="true">Location Annuelle (12 mois)</td>
-                            <td class="p-3 text-center font-bold text-slate-900 border-r border-slate-200" id="cell-C13" contenteditable="true">105 000 000 FCFA</td>
-                            <td class="p-3 text-center font-black text-blue-900 border-r border-slate-200" id="cell-D19" contenteditable="true">10 500 000 000 FCFA</td>
-                            <td class="p-3 text-center text-blue-900 font-medium" contenteditable="true">Cumul annuel (12 mois)</td>
+                            <td class="p-3 text-left-print font-bold text-blue-950 border-r border-slate-200" contenteditable="true">Location Annuelle (12 mois)</td>
+                            <td class="p-3 text-center font-bold text-slate-900 border-r border-slate-200" id="cell-1t-year-ht" contenteditable="true">45.000.000 FCFA</td>
+                            <td class="p-3 text-center font-extrabold text-blue-900 border-r border-slate-200" id="cell-fl-year-ht" contenteditable="true">4.500.000.000 FCFA</td>
+                            <td class="p-3 text-center font-medium text-amber-800 border-r border-slate-200" id="cell-fl-year-tva" contenteditable="true">810.000.000 FCFA</td>
+                            <td class="p-3 text-center font-black text-blue-900" id="cell-fl-year-ttc" contenteditable="true">5.310.000.000 FCFA</td>
                         </tr>
 
                         <tr>
-                            <td colspan="5" class="p-2.5 font-bold bg-slate-100 text-slate-800 text-center uppercase tracking-wider border-t border-b border-slate-300 text-[11px]" contenteditable="true">
-                                III. SYNTHÈSE TOTALE CONTRACTUELLE
+                            <td colspan="6" class="p-2.5 font-bold bg-slate-100 text-slate-800 text-center uppercase tracking-wider border-t border-b border-slate-300 text-[11px]" contenteditable="true">
+                                II. RECAPITULATIF FINANCIER GLOBAL
                             </td>
                         </tr>
                         <tr class="bg-emerald-50 text-emerald-950 font-bold">
                             <td class="p-3.5 text-center font-mono-code font-bold text-emerald-800 border-r border-slate-300" contenteditable="true">T-01</td>
-                            <td class="p-3.5 font-extrabold text-sm border-r border-slate-300" colspan="2" contenteditable="true">TOTAL GÉNÉRAL ANNUEL</td>
-                            <td class="p-3.5 text-center font-black text-emerald-700 text-base border-r border-slate-300" id="cell-D21" contenteditable="true">10 500 000 000 FCFA</td>
-                            <td class="p-3.5 text-center text-emerald-900 font-semibold" contenteditable="true">Engagement annuel global</td>
+                            <td class="p-3.5 text-left-print font-extrabold text-sm border-r border-slate-300" colspan="2" contenteditable="true">TOTAL GÉNÉRAL ANNUEL TTC</td>
+                            <td class="p-3.5 text-center font-bold text-slate-900 border-r border-slate-300" id="cell-tot-ht" contenteditable="true">4.500.000.000 FCFA</td>
+                            <td class="p-3.5 text-center font-bold text-amber-700 border-r border-slate-300" id="cell-tot-tva" contenteditable="true">810.000.000 FCFA</td>
+                            <td class="p-3.5 text-center font-black text-emerald-700 text-base" id="cell-tot-ttc" contenteditable="true">5.310.000.000 FCFA</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
 
+        <!-- VUE 3 : MODALITÉS ET CONDITIONS -->
         <div id="tab-view-guide" class="hidden bg-white rounded-xl shadow-lg border border-slate-200 p-6 sm:p-8">
             <h2 class="text-lg font-bold text-slate-900 mb-3 flex items-center" contenteditable="true">
                 <i class="fa-solid fa-clipboard-check text-blue-600 mr-2"></i> Conditions & Modalités d'Exploitation
@@ -517,8 +517,8 @@
                             <span contenteditable="true">100 camions routiers IVECO sous contrat exclusif d'exploitation pour Terratransport.</span>
                         </li>
                         <li class="bg-white p-3 rounded-lg border border-slate-200">
-                            <strong class="text-slate-900 block mb-0.5" contenteditable="true">Tarif journalier :</strong>
-                            <span contenteditable="true">350 000 FCFA par camion et par jour d'exploitation.</span>
+                            <strong class="text-slate-900 block mb-0.5" contenteditable="true">Tarif journalier HT :</strong>
+                            <span contenteditable="true">150 000 FCFA par camion et par jour d'exploitation.</span>
                         </li>
                         <li class="bg-white p-3 rounded-lg border border-slate-200">
                             <strong class="text-slate-900 block mb-0.5" contenteditable="true">Limites contractuelles :</strong>
@@ -530,15 +530,15 @@
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
                     <h3 class="font-bold text-slate-800 text-xs mb-3 flex items-center border-b pb-2" contenteditable="true">
                         <i class="fa-solid fa-file-contract text-emerald-600 mr-2"></i>
-                        2. Contact & Facturation
+                        2. Régime Fiscal & Contact
                     </h3>
                     <ul class="space-y-2.5 text-xs text-slate-700">
                         <li class="bg-white p-3 rounded-lg border border-slate-200">
-                            <strong class="text-slate-900 block mb-0.5" contenteditable="true">Loyer Mensuel Estimé :</strong>
-                            <span contenteditable="true">875 000 000 FCFA pour l'ensemble des 100 camions.</span>
+                            <strong class="text-slate-900 block mb-0.5" contenteditable="true">Application de la TVA :</strong>
+                            <span contenteditable="true">TVA légale de 18% appliquée sur l'ensemble des prestations.</span>
                         </li>
                         <li class="bg-white p-3 rounded-lg border border-slate-200">
-                            <strong class="text-slate-900 block mb-0.5" contenteditable="true">Coordonnées de Contact :</strong>
+                            <strong class="text-slate-900 block mb-0.5" contenteditable="true">Coordonnées Officielle :</strong>
                             Tél : <strong contenteditable="true" class="text-slate-900">77 939 84 84</strong> &bull; Courriel : <strong contenteditable="true" class="text-slate-900">Contact@terratransport.com</strong>
                         </li>
                     </ul>
@@ -549,7 +549,7 @@
     </main>
 
     <script>
-        // Formateur monétaire français (ex: 350 000 FCFA)
+        // Formateur monétaire français (ex: 150 000 FCFA)
         function formatFCFA(amount) {
             return new Intl.NumberFormat('fr-FR').format(Math.round(amount)) + ' FCFA';
         }
@@ -557,77 +557,136 @@
         // Fonction de recalcul automatique lors de la modification des paramètres
         function recalculate() {
             const count = parseFloat(document.getElementById('param-nb-camions').value) || 0;
-            const rateDay = parseFloat(document.getElementById('param-prix-jour').value) || 0;
+            const rateDayHT = parseFloat(document.getElementById('param-prix-jour').value) || 0;
             const daysWeek = parseFloat(document.getElementById('param-jours-semaine').value) || 0;
             const daysMonth = parseFloat(document.getElementById('param-jours-mois').value) || 0;
+            const tvaPct = parseFloat(document.getElementById('param-tva').value) || 0;
             const remisePct = parseFloat(document.getElementById('param-remise').value) || 0;
 
-            // --- 1. CALCULS POUR 1 CAMION ---
-            const truck1Day = rateDay;
-            const truck1Week = rateDay * daysWeek;
-            const truck1Month = rateDay * daysMonth;
-            const truck1Year = truck1Month * 12;
+            const tvaMult = tvaPct / 100;
 
-            // --- 2. CALCULS POUR LA FLOTTE COMPLÈTE ---
-            const fleetDay = truck1Day * count;
-            const fleetWeek = truck1Week * count;
-            const fleetMonth = truck1Month * count;
-            const fleetYear = truck1Year * count;
+            // --- 1. CALCULS UNITAIRES (1 CAMION) ---
+            const t1DayHT = rateDayHT;
+            const t1DayTVA = t1DayHT * tvaMult;
+            const t1DayTTC = t1DayHT + t1DayTVA;
 
-            // --- 3. CALCULS TOTAUX ---
-            const subtotalHT = fleetYear;
+            const t1WeekHT = rateDayHT * daysWeek;
+            const t1WeekTVA = t1WeekHT * tvaMult;
+            const t1WeekTTC = t1WeekHT + t1WeekTVA;
+
+            const t1MonthHT = rateDayHT * daysMonth;
+            const t1MonthTVA = t1MonthHT * tvaMult;
+            const t1MonthTTC = t1MonthHT + t1MonthTVA;
+
+            const t1YearHT = t1MonthHT * 12;
+            const t1YearTVA = t1YearHT * tvaMult;
+            const t1YearTTC = t1YearHT + t1YearTVA;
+
+            // --- 2. CALCULS FLOTTE (100 CAMIONS) ---
+            const flDayHT = t1DayHT * count;
+            const flDayTVA = t1DayTVA * count;
+            const flDayTTC = t1DayTTC * count;
+
+            const flWeekHT = t1WeekHT * count;
+            const flWeekTVA = t1WeekTVA * count;
+            const flWeekTTC = t1WeekTTC * count;
+
+            const flMonthHT = t1MonthHT * count;
+            const flMonthTVA = t1MonthTVA * count;
+            const flMonthTTC = t1MonthTTC * count;
+
+            const flYearHT = t1YearHT * count;
+            const flYearTVA = t1YearTVA * count;
+            const flYearTTC = t1YearTTC * count;
+
+            // --- 3. RECAPITULATIF FINANCIER GLOBAL ---
+            const subtotalHT = flYearHT;
             const remiseVal = subtotalHT * (remisePct / 100);
-            const totalHT = subtotalHT - remiseVal;
-            const monthlyHT = totalHT / 12;
+            const netHT = subtotalHT - remiseVal;
+            const totalTVA = netHT * tvaMult;
+            const totalTTC = netHT + totalTVA;
+            const monthlyTTC = totalTTC / 12;
 
-            // --- MISE À JOUR VUE DEVIS PORTRAIT ---
-            document.getElementById('card-rate-day').innerText = formatFCFA(rateDay);
+            // Mettre à jour l'affichage des étiquettes de TVA
+            document.querySelectorAll('.lbl-tva-pct').forEach(el => {
+                el.innerText = tvaPct;
+            });
+
+            // Mettre à jour les cartes d'en-tête
             document.getElementById('card-truck-count').innerText = count + ' Camions';
-            document.getElementById('card-days-week').innerText = daysWeek + ' Jours';
+            document.getElementById('card-rate-day').innerText = formatFCFA(rateDayHT);
+            document.getElementById('card-tva-rate').innerText = tvaPct + ' %';
             document.getElementById('card-days-month').innerText = daysMonth + ' Jours';
 
-            document.getElementById('desc-1truck-week').innerText = daysWeek + ' jours max / semaine';
-            document.getElementById('desc-1truck-month').innerText = daysMonth + ' jours max / mois';
+            // --- SECTION 1 : TABLEAU 1 CAMION ---
+            document.getElementById('row-1t-day-ht').innerText = formatFCFA(t1DayHT);
+            document.getElementById('row-1t-day-tva').innerText = formatFCFA(t1DayTVA);
+            document.getElementById('row-1t-day-ttc').innerText = formatFCFA(t1DayTTC);
 
-            document.getElementById('row-1truck-day').innerText = formatFCFA(truck1Day);
-            document.getElementById('row-1truck-week').innerText = formatFCFA(truck1Week);
-            document.getElementById('row-1truck-month').innerText = formatFCFA(truck1Month);
-            document.getElementById('row-1truck-year').innerText = formatFCFA(truck1Year);
+            document.getElementById('row-1t-week-ht').innerText = formatFCFA(t1WeekHT);
+            document.getElementById('row-1t-week-tva').innerText = formatFCFA(t1WeekTVA);
+            document.getElementById('row-1t-week-ttc').innerText = formatFCFA(t1WeekTTC);
 
+            document.getElementById('row-1t-month-ht').innerText = formatFCFA(t1MonthHT);
+            document.getElementById('row-1t-month-tva').innerText = formatFCFA(t1MonthTVA);
+            document.getElementById('row-1t-month-ttc').innerText = formatFCFA(t1MonthTTC);
+
+            document.getElementById('row-1t-year-ht').innerText = formatFCFA(t1YearHT);
+            document.getElementById('row-1t-year-tva').innerText = formatFCFA(t1YearTVA);
+            document.getElementById('row-1t-year-ttc').innerText = formatFCFA(t1YearTTC);
+
+            // --- SECTION 2 : TABLEAU FLOTTE COMPLÈTE ---
             document.getElementById('title-fleet-count').innerText = count;
-            document.getElementById('mult-fleet-day').innerText = count + ' × ' + formatFCFA(truck1Day);
-            document.getElementById('mult-fleet-week').innerText = count + ' × ' + formatFCFA(truck1Week);
-            document.getElementById('mult-fleet-month').innerText = count + ' × ' + formatFCFA(truck1Month);
-            document.getElementById('mult-fleet-year').innerText = count + ' × ' + formatFCFA(truck1Year);
 
-            document.getElementById('row-100trucks-day').innerText = formatFCFA(fleetDay);
-            document.getElementById('row-100trucks-week').innerText = formatFCFA(fleetWeek);
-            document.getElementById('row-100trucks-month').innerText = formatFCFA(fleetMonth);
-            document.getElementById('row-100trucks-year').innerText = formatFCFA(fleetYear);
+            document.getElementById('row-fleet-day-ht').innerText = formatFCFA(flDayHT);
+            document.getElementById('row-fleet-day-tva').innerText = formatFCFA(flDayTVA);
+            document.getElementById('row-fleet-day-ttc').innerText = formatFCFA(flDayTTC);
 
-            document.getElementById('recap-subtotal').innerText = formatFCFA(subtotalHT);
+            document.getElementById('row-fleet-week-ht').innerText = formatFCFA(flWeekHT);
+            document.getElementById('row-fleet-week-tva').innerText = formatFCFA(flWeekTVA);
+            document.getElementById('row-fleet-week-ttc').innerText = formatFCFA(flWeekTTC);
+
+            document.getElementById('row-fleet-month-ht').innerText = formatFCFA(flMonthHT);
+            document.getElementById('row-fleet-month-tva').innerText = formatFCFA(flMonthTVA);
+            document.getElementById('row-fleet-month-ttc').innerText = formatFCFA(flMonthTTC);
+
+            document.getElementById('row-fleet-year-ht').innerText = formatFCFA(flYearHT);
+            document.getElementById('row-fleet-year-tva').innerText = formatFCFA(flYearTVA);
+            document.getElementById('row-fleet-year-ttc').innerText = formatFCFA(flYearTTC);
+
+            // --- RÉCAPITULATIF FINANCIER ---
+            document.getElementById('recap-subtotal-ht').innerText = formatFCFA(netHT);
+            document.getElementById('recap-total-tva').innerText = '+ ' + formatFCFA(totalTVA);
             document.getElementById('recap-remise-pct').innerText = remisePct;
             document.getElementById('recap-remise-val').innerText = '- ' + formatFCFA(remiseVal);
-            document.getElementById('recap-ttc-total').innerText = formatFCFA(totalHT);
-            document.getElementById('recap-ttc-monthly').innerText = formatFCFA(monthlyHT) + ' / mois';
+            document.getElementById('recap-ttc-total').innerText = formatFCFA(totalTTC);
+            document.getElementById('recap-ttc-monthly').innerText = formatFCFA(monthlyTTC) + ' / mois';
 
-            // --- MISE À JOUR TABLEAU SYNTHÉTIQUE ---
-            document.getElementById('cell-B4').innerText = count + ' Camions';
-            document.getElementById('cell-B5').innerText = formatFCFA(rateDay);
-            document.getElementById('cell-B6').innerText = daysWeek + ' Jours';
-            document.getElementById('cell-B7').innerText = daysMonth + ' Jours';
+            // --- VUE 2 : TABLEAU SYNTHÉTIQUE ---
+            document.getElementById('cell-1t-day-ht').innerText = formatFCFA(t1DayHT);
+            document.getElementById('cell-1t-week-ht').innerText = formatFCFA(t1WeekHT);
+            document.getElementById('cell-1t-month-ht').innerText = formatFCFA(t1MonthHT);
+            document.getElementById('cell-1t-year-ht').innerText = formatFCFA(t1YearHT);
 
-            document.getElementById('cell-C10').innerText = formatFCFA(truck1Day);
-            document.getElementById('cell-C11').innerText = formatFCFA(truck1Week);
-            document.getElementById('cell-C12').innerText = formatFCFA(truck1Month);
-            document.getElementById('cell-C13').innerText = formatFCFA(truck1Year);
+            document.getElementById('cell-fl-day-ht').innerText = formatFCFA(flDayHT);
+            document.getElementById('cell-fl-day-tva').innerText = formatFCFA(flDayTVA);
+            document.getElementById('cell-fl-day-ttc').innerText = formatFCFA(flDayTTC);
 
-            document.getElementById('cell-D16').innerText = formatFCFA(fleetDay);
-            document.getElementById('cell-D17').innerText = formatFCFA(fleetWeek);
-            document.getElementById('cell-D18').innerText = formatFCFA(fleetMonth);
-            document.getElementById('cell-D19').innerText = formatFCFA(fleetYear);
+            document.getElementById('cell-fl-week-ht').innerText = formatFCFA(flWeekHT);
+            document.getElementById('cell-fl-week-tva').innerText = formatFCFA(flWeekTVA);
+            document.getElementById('cell-fl-week-ttc').innerText = formatFCFA(flWeekTTC);
 
-            document.getElementById('cell-D21').innerText = formatFCFA(totalHT);
+            document.getElementById('cell-fl-month-ht').innerText = formatFCFA(flMonthHT);
+            document.getElementById('cell-fl-month-tva').innerText = formatFCFA(flMonthTVA);
+            document.getElementById('cell-fl-month-ttc').innerText = formatFCFA(flMonthTTC);
+
+            document.getElementById('cell-fl-year-ht').innerText = formatFCFA(flYearHT);
+            document.getElementById('cell-fl-year-tva').innerText = formatFCFA(flYearTVA);
+            document.getElementById('cell-fl-year-ttc').innerText = formatFCFA(flYearTTC);
+
+            document.getElementById('cell-tot-ht').innerText = formatFCFA(netHT);
+            document.getElementById('cell-tot-tva').innerText = formatFCFA(totalTVA);
+            document.getElementById('cell-tot-ttc').innerText = formatFCFA(totalTTC);
         }
 
         // Navigation entre onglets
@@ -663,23 +722,33 @@
         // Exportation en fichier CSV
         function exportCSV() {
             const count = document.getElementById('param-nb-camions').value;
-            const rateDay = document.getElementById('param-prix-jour').value;
+            const rateDayHT = document.getElementById('param-prix-jour').value;
             const daysWeek = document.getElementById('param-jours-semaine').value;
             const daysMonth = document.getElementById('param-jours-mois').value;
+            const tvaPct = document.getElementById('param-tva').value;
 
             let csvContent = "data:text/csv;charset=utf-8,";
-            csvContent += "DEVIS FINANCIER LOCATIF - TERRATRANSPORT x IVECO\n";
-            csvContent += "Parametre;Valeur;Unite\n";
+            csvContent += "DEVIS FINANCIER DE LOCATION - TERRATRANSPORT x IVECO\n";
             csvContent += `Nombre Camions;${count};Vehicules\n`;
-            csvContent += `Tarif Jour;${rateDay};FCFA\n`;
+            csvContent += `Tarif Jour HT;${rateDayHT};FCFA\n`;
             csvContent += `Jours par Semaine;${daysWeek};Jours\n`;
-            csvContent += `Jours par Mois;${daysMonth};Jours\n\n`;
+            csvContent += `Jours par Mois;${daysMonth};Jours\n`;
+            csvContent += `Taux TVA;${tvaPct}%\n\n`;
 
-            csvContent += "PERIODE;TARIF 1 CAMION (FCFA);TARIF FLOTTE TOTALE (FCFA)\n";
-            csvContent += `Par Jour;${rateDay};${rateDay * count}\n`;
-            csvContent += `Par Semaine;${rateDay * daysWeek};${rateDay * daysWeek * count}\n`;
-            csvContent += `Par Mois;${rateDay * daysMonth};${rateDay * daysMonth * count}\n`;
-            csvContent += `Par An;${rateDay * daysMonth * 12};${rateDay * daysMonth * 12 * count}\n`;
+            csvContent += "PERIODE;1 CAMION HT;100 CAMIONS HT;TVA (18%);FLOTTE TTC (FCFA)\n";
+            const multTVA = tvaPct / 100;
+
+            const dayHT = rateDayHT * count;
+            csvContent += `Par Jour;${rateDayHT};${dayHT};${dayHT * multTVA};${dayHT * (1 + multTVA)}\n`;
+
+            const weekHT = rateDayHT * daysWeek * count;
+            csvContent += `Par Semaine;${rateDayHT * daysWeek};${weekHT};${weekHT * multTVA};${weekHT * (1 + multTVA)}\n`;
+
+            const monthHT = rateDayHT * daysMonth * count;
+            csvContent += `Par Mois;${rateDayHT * daysMonth};${monthHT};${monthHT * multTVA};${monthHT * (1 + multTVA)}\n`;
+
+            const yearHT = monthHT * 12;
+            csvContent += `Par An;${rateDayHT * daysMonth * 12};${yearHT};${yearHT * multTVA};${yearHT * (1 + multTVA)}\n`;
 
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
