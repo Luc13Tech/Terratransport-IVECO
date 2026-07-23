@@ -405,18 +405,44 @@
             </div>
 
             <div class="mt-8 pt-4 border-t border-slate-200 grid grid-cols-2 gap-6 text-xs text-slate-600 page-break-inside-avoid">
-                <div class="border border-slate-200 rounded-xl p-4 bg-slate-50/50 text-left">
-                    <p class="font-bold text-slate-900 mb-0.5" contenteditable="true">POUR IVECO MOTORS S.A.</p>
-                    <p class="text-[10px] text-slate-500 mb-10" contenteditable="true">Bon pour accord et confirmation tarifaire</p>
+                <div class="border border-slate-200 rounded-xl p-4 bg-slate-50/50 text-left flex flex-col justify-between">
+                    <div>
+                        <p class="font-bold text-slate-900 mb-0.5" contenteditable="true">POUR IVECO MOTORS S.A.</p>
+                        <p class="text-[10px] text-slate-500 mb-2" contenteditable="true">Bon pour accord et confirmation tarifaire</p>
+                    </div>
+
+                    <!-- Zone d'importation de l'image du cachet IVECO -->
+                    <div class="relative my-2 h-24 flex items-center justify-center border-2 border-dashed border-slate-300 rounded-lg bg-white/60 hover:bg-slate-100 transition-all cursor-pointer group" onclick="document.getElementById('stamp-upload-iveco').click()" title="Cliquer pour importer le cachet IVECO">
+                        <img id="stamp-img-iveco" src="https://placehold.co/200x100/f8fafc/dc2626?text=Cachet+IVECO" alt="Cachet IVECO" class="max-h-20 max-w-full object-contain filter drop-shadow-sm">
+                        <div class="absolute inset-0 bg-slate-900/60 text-white flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-lg no-print">
+                            <i class="fa-solid fa-upload text-sm mb-1"></i>
+                            <span class="text-[10px] font-bold">Changer le cachet IVECO</span>
+                        </div>
+                    </div>
+                    <input type="file" id="stamp-upload-iveco" accept="image/*" class="hidden" onchange="loadStampImage(event, 'stamp-img-iveco')">
+
                     <div class="border-t border-dashed border-slate-300 pt-1.5 flex justify-between text-[10px] text-slate-400">
                         <span contenteditable="true">Date & Signature</span>
                         <span contenteditable="true">Cachet Officiel</span>
                     </div>
                 </div>
 
-                <div class="border border-slate-200 rounded-xl p-4 bg-slate-50/50 text-left">
-                    <p class="font-bold text-slate-900 mb-0.5" contenteditable="true">POUR TERRATRANSPORT S.A.</p>
-                    <p class="text-[10px] text-slate-500 mb-10" contenteditable="true">Acceptation de l'offre de location</p>
+                <div class="border border-slate-200 rounded-xl p-4 bg-slate-50/50 text-left flex flex-col justify-between ring-2 ring-blue-500/20">
+                    <div>
+                        <p class="font-bold text-slate-900 mb-0.5" contenteditable="true">POUR TERRATRANSPORT S.A.</p>
+                        <p class="text-[10px] text-slate-500 mb-2" contenteditable="true">Acceptation de l'offre de location</p>
+                    </div>
+
+                    <!-- Zone d'importation de l'image du cachet TERRATRANSPORT -->
+                    <div class="relative my-2 h-24 flex items-center justify-center border-2 border-dashed border-blue-400/80 rounded-lg bg-blue-50/30 hover:bg-blue-50 transition-all cursor-pointer group" onclick="document.getElementById('stamp-upload-terratransport').click()" title="Cliquer pour charger votre image de cachet Terratransport">
+                        <img id="stamp-img-terratransport" src="https://placehold.co/200x100/eff6ff/1e40af?text=Cliquer+ici+pour+importer+votre+cachet" alt="Cachet Terratransport" class="max-h-20 max-w-full object-contain filter drop-shadow-sm">
+                        <div class="absolute inset-0 bg-blue-900/70 text-white flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-lg no-print">
+                            <i class="fa-solid fa-stamp text-base mb-1 text-blue-300"></i>
+                            <span class="text-[10px] font-bold">Charger le cachet Terratransport</span>
+                        </div>
+                    </div>
+                    <input type="file" id="stamp-upload-terratransport" accept="image/*" class="hidden" onchange="loadStampImage(event, 'stamp-img-terratransport')">
+
                     <div class="border-t border-dashed border-slate-300 pt-1.5 flex justify-between text-[10px] text-slate-400">
                         <span contenteditable="true">Date & Signature</span>
                         <span contenteditable="true">Cachet Client</span>
@@ -768,6 +794,21 @@
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+        }
+
+        // Charger l'image du cachet sélectionnée par l'utilisateur
+        function loadStampImage(event, targetImgId) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgElement = document.getElementById(targetImgId);
+                    if (imgElement) {
+                        imgElement.src = e.target.result;
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
         }
 
         // Initialize on load
